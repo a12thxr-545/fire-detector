@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+ai-fire-monitor/venv/
+
+# Logs and Databases
+*.log
+ai.log
+ai-fire-monitor/ai.log
+database.db
+*.db
+ai-fire-monitor/database.db
+line_users.json
+ai-fire-monitor/line_users.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Training runs / caches
+ai-fire-monitor/runs/
+ai-fire-monitor/captures/*.jpg
+!ai-fire-monitor/captures/.gitkeep

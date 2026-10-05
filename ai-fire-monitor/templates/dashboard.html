@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fire Monitor — Minimal Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- HEADER -->
+        <header class="top-nav">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/>
+                    </svg>
+                </div>
+                <div class="brand-meta">
+                    <span class="nav-title">FIRE MONITOR</span>
+                    <span class="nav-divider">/</span>
+                    <span id="room" class="nav-room">warehouse</span>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <div class="status-pill">
+                    <span id="connectionDot" class="connection-dot"></span>
+                    <span id="connectionText" class="connection-text">Connecting...</span>
+                </div>
+
+                <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+                    <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- TOP METRICS (RESPONSIVE GRID) -->
+        <section class="metrics-bar">
+            <!-- OVERALL STATUS -->
+            <div class="metric-box box-status">
+                <div class="box-header">
+                    <span class="box-label">OVERALL STATUS</span>
+                    <span class="icon-indicator">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </span>
+                </div>
+                <div class="box-main">
+                    <span id="status" class="status normal">NORMAL</span>
+                </div>
+            </div>
+
+            <!-- RISK LEVEL -->
+            <div class="metric-box">
+                <div class="box-header">
+                    <span class="box-label">RISK LEVEL</span>
+                    <span class="icon-indicator">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                    </span>
+                </div>
+                <div id="risk" class="box-value font-mono">0.00%</div>
+                <div class="box-track">
+                    <div id="riskProgressBar" class="box-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- TEMPERATURE -->
+            <div class="metric-box">
+                <div class="box-header">
+                    <span class="box-label">TEMPERATURE</span>
+                    <span class="icon-indicator">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                        </svg>
+                    </span>
+                </div>
+                <div id="temperature" class="box-value font-mono">0.00°C</div>
+                <div id="tempRisk" class="box-sub">Temp Risk: 0.00%</div>
+            </div>
+
+            <!-- TODAY'S RANGE (DAILY DB) -->
+            <div class="metric-box">
+                <div class="box-header">
+                    <span class="box-label">TODAY'S TEMP RANGE</span>
+                    <span class="icon-indicator">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6"/>
+                        </svg>
+                    </span>
+                </div>
+                <div class="daily-temp-box font-mono" style="font-size: 0.82rem; line-height: 1.35; margin: 4px 0;">
+                    <div style="color: #ef4444; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Max: <strong id="todayMaxTemp">--°C</strong></span>
+                        <span id="todayMaxTime" style="font-size: 0.75rem; opacity: 0.75;">--:--</span>
+                    </div>
+                    <div style="color: #06b6d4; display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
+                        <span>Min: <strong id="todayMinTemp">--°C</strong></span>
+                        <span id="todayMinTime" style="font-size: 0.75rem; opacity: 0.75;">--:--</span>
+                    </div>
+                </div>
+                <div class="box-sub">Daily SQLite DB</div>
+            </div>
+
+            <!-- HUMIDITY -->
+            <div class="metric-box">
+                <div class="box-header">
+                    <span class="box-label">HUMIDITY</span>
+                    <span class="icon-indicator">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                        </svg>
+                    </span>
+                </div>
+                <div id="humidity" class="box-value font-mono">0.00%</div>
+                <div class="box-sub">Relative Humidity</div>
+            </div>
+
+            <!-- GAS / SMOKE -->
+            <div class="metric-box">
+                <div class="box-header">
+                    <span class="box-label">GAS / SMOKE</span>
+                    <span class="icon-indicator">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                        </svg>
+                    </span>
+                </div>
+                <div id="gas" class="box-value font-mono">0.00%</div>
+                <div id="gasRisk" class="box-sub">Gas Risk: 0.00%</div>
+            </div>
+        </section>
+
+        <!-- MAIN LAYOUT (RESPONSIVE GRID) -->
+        <main class="content-grid">
+            
+            <!-- LEFT COLUMN: CAMERA STREAM & GRAPH -->
+            <div class="grid-col col-main">
+                
+                <!-- VISION FEED CARD -->
+                <section class="panel">
+                    <div class="panel-header">
+                        <div class="panel-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 7l-7 5 7 5V7z"/>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                            </svg>
+                            <span class="panel-title">VISION FEED</span>
+                        </div>
+                        <span id="cameraBadge" class="badge off">OFF</span>
+                    </div>
+
+                    <div id="cameraContainer" class="viewport">
+                        <div id="cameraOffline" class="viewport-standby">
+                            <div class="standby-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M1 1l22 22M21 21H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m3-2h6l2 3h4a2 2 0 0 1 2 2v9.5M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                </svg>
+                            </div>
+                            <span class="standby-title">Camera Standby</span>
+                            <span class="standby-desc">Auto-activates when Temperature &ge; 29.5&deg;C or Gas/Smoke is detected.</span>
+                        </div>
+                        <img id="cameraStream" class="viewport-feed" src="" alt="ESP32-CAM Stream">
+                    </div>
+                </section>
+
+                <!-- TELEMETRY GRAPH CARD -->
+                <section class="panel">
+                    <div class="panel-header">
+                        <div class="panel-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                            <span class="panel-title">TELEMETRY GRAPH</span>
+                        </div>
+                        <span id="graphStatus" class="graph-status live">LIVE</span>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="sensorChart"></canvas>
+                    </div>
+                </section>
+            </div>
+
+            <!-- RIGHT COLUMN: YOLO AI & SYSTEM -->
+            <div class="grid-col col-side">
+                
+                <!-- YOLO AI CARD -->
+                <section class="panel">
+                    <div class="panel-header">
+                        <div class="panel-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <span class="panel-title">YOLO AI VISION</span>
+                        </div>
+                        <span id="yoloStatus" class="badge off">STANDBY</span>
+                    </div>
+                    <div class="panel-content">
+                        <div id="yoloDetection" class="yolo-box">
+                            <div class="yolo-normal">
+                                <span class="dot-green"></span>
+                                <span>No fire or smoke detected</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HARDWARE CONTROLLER CARD -->
+                <section class="panel">
+                    <div class="panel-header">
+                        <div class="panel-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                <line x1="6" y1="18" x2="6.01" y2="18"/>
+                            </svg>
+                            <span class="panel-title">CAMERA HARDWARE</span>
+                        </div>
+                    </div>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="info-key">State</span>
+                            <span id="camera" class="info-val font-mono">OFF</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-key">Stream Engine</span>
+                            <span id="stream" class="info-val font-mono">Stream OFF</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SYSTEM DIAGNOSTICS CARD -->
+                <section class="panel">
+                    <div class="panel-header">
+                        <div class="panel-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                                <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                                <line x1="12" y1="20" x2="12.01" y2="20"/>
+                            </svg>
+                            <span class="panel-title">SYSTEM TELEMETRY</span>
+                        </div>
+                    </div>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="info-key">MQTT Broker</span>
+                            <span id="mqttStatus" class="info-val">Connected</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-key">AI Model</span>
+                            <span id="yoloSystem" class="info-val">Loaded</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-key">Last Update</span>
+                            <span id="lastUpdate" class="info-val font-mono">-</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bottom-footer">
+            <span>FIRE MONITORING SYSTEM &bull; ESP32-CAM / DHT11 / MQ / MQTT / YOLOv8</span>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

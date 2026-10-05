@@ -1,0 +1,9 @@
+path: /Users/arthur/fire-detector/ai-fire-monitor/datasets/fire_smoke_2class
+
+train: train/images
+val: valid/images
+test: test/images
+
+names:
+  0: Fire
+  1: Smoke

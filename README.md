@@ -1,4 +1,4 @@
-# 🔥 AI Fire & Smoke Detection System (ระบบตรวจจับไฟและควันด้วย AI + IoT)
+#  AI Fire & Smoke Detection System (ระบบตรวจจับไฟและควันด้วย AI + IoT)
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C.svg)](https://pytorch.org/)
@@ -12,17 +12,17 @@
 
 ---
 
-## 🌟 จุดเด่นของโครงการ (Key Features)
+##  จุดเด่นของโครงการ (Key Features)
 
-* **🤖 Real-time AI Object Detection (YOLOv8)**: ตรวจจับภาพเปลวไฟ (Fire) และควัน (Smoke) แบบเรียลไทม์ด้วยคอนฟิเดนซ์ความแม่นยำสูง
-* **🌡️ Multi-Sensor Monitoring**: อ่านค่าจากเซนเซอร์ **DHT11** (อุณหภูมิและความชื้น) และ **MQ Sensor** (ก๊าซและควัน) ส่งข้อมูลผ่านโปรโตคอล **MQTT**
-* **📊 Modern Web Dashboard**: หน้าจอควบคุมแบบ Interactive Glassmorphism UI แสดงผลวิดีโอสตรีมสด, กราฟสถิติแบบเรียลไทม์, และตารางบันทึกค่าอุณหภูมิสูงสุด/ต่ำสุดประจำวัน (SQLite Database)
-* **📱 LINE Messaging API & Rich Menu**: ส่งภาพถ่ายสถานการณ์จริงพร้อมกรอบ AI Detection เข้า LINE ทันทีเมื่อพบความเสี่ยง และรองรับการสั่งงานผ่าน Rich Menu
-* **🧠 Machine Learning Risk Model**: วิเคราะห์ความเสี่ยงรวมโดยใช้ Scikit-learn (RandomForest) คำนวณร่วมระหว่างสภาพแวดล้อมและภาพถ่าย
+* ** Real-time AI Object Detection (YOLOv8)**: ตรวจจับภาพเปลวไฟ (Fire) และควัน (Smoke) แบบเรียลไทม์ด้วยคอนฟิเดนซ์ความแม่นยำสูง
+* ** Multi-Sensor Monitoring**: อ่านค่าจากเซนเซอร์ **DHT11** (อุณหภูมิและความชื้น) และ **MQ Sensor** (ก๊าซและควัน) ส่งข้อมูลผ่านโปรโตคอล **MQTT**
+* ** Modern Web Dashboard**: หน้าจอควบคุมแบบ Interactive Glassmorphism UI แสดงผลวิดีโอสตรีมสด, กราฟสถิติแบบเรียลไทม์, และตารางบันทึกค่าอุณหภูมิสูงสุด/ต่ำสุดประจำวัน (SQLite Database)
+* ** LINE Messaging API & Rich Menu**: ส่งภาพถ่ายสถานการณ์จริงพร้อมกรอบ AI Detection เข้า LINE ทันทีเมื่อพบความเสี่ยง และรองรับการสั่งงานผ่าน Rich Menu
+* ** Machine Learning Risk Model**: วิเคราะห์ความเสี่ยงรวมโดยใช้ Scikit-learn (RandomForest) คำนวณร่วมระหว่างสภาพแวดล้อมและภาพถ่าย
 
 ---
 
-## 🏗️ สถาปัตยกรรมระบบ (System Architecture)
+##  สถาปัตยกรรมระบบ (System Architecture)
 
 ```
 [ ESP32-CAM + Sensors ]
@@ -40,7 +40,7 @@
 
 ---
 
-## 📁 โครงสร้างโปรเจกต์ (Project Structure)
+##  โครงสร้างโปรเจกต์ (Project Structure)
 
 ```
 fire-detector/
@@ -69,7 +69,7 @@ fire-detector/
 
 ---
 
-## 🔌 ฮาร์ดแวร์และการต่อสาย (Hardware Requirements)
+##  ฮาร์ดแวร์และการต่อสาย (Hardware Requirements)
 
 1. **ESP32-CAM** (AI-Thinker Module)
 2. **DHT11 Sensor** (เซนเซอร์วัดอุณหภูมิและความชื้น) -> ต่อเข้ากับปิน `GPIO 13`
@@ -79,7 +79,7 @@ fire-detector/
 
 ---
 
-## 🚀 การติดตั้งและใช้งาน (Installation & Setup)
+##  การติดตั้งและใช้งาน (Installation & Setup)
 
 ### 1. การเตรียมเซิร์ฟเวอร์ AI (AI Monitor Server)
 
@@ -139,7 +139,7 @@ python3 setup_richmenu.py
 
 ---
 
-## 🎯 การฝึกฝนโมเดล AI เพิ่มเติม (AI Model Training)
+##  การฝึกฝนโมเดล AI เพิ่มเติม (AI Model Training)
 
 หากต้องการฝึกฝนโมเดลตรวจจับไฟและควันด้วยชุดข้อมูลของคุณเอง:
 
@@ -152,9 +152,9 @@ python3 setup_richmenu.py
 
 ---
 
-## 📜 การรับประกันและการใช้งาน (License)
+##  การรับประกันและการใช้งาน (License)
 
 โปรเจกต์นี้เปิดให้ใช้งานและพัฒนาต่อเพื่อการศึกษาและวิจัย (Open-source for educational and research purposes).
 
 ---
-*จัดทำและพัฒนาโดยทีมงาน Fire Detector System* 🚀
+*จัดทำและพัฒนาโดยทีมงาน นายอติชาตเดโช หนุนกลาง และ นาย พิสิฐ ครูสอนดี* 
